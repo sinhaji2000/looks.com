@@ -9,7 +9,6 @@
     <!-- Form for Creating a Post -->
     <% if (locals.user) { %> 
     <form action="post/create-post" method="post" class="space-y-4 mb-8">
-      <!-- Textarea for Post Content -->
       <textarea 
         name="content" 
         cols="30" 
@@ -18,8 +17,6 @@
         required 
         class="w-full p-4 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
       ></textarea>
-
-      <!-- Submit Button -->
       <input 
         type="submit" 
         value="Post" 
@@ -30,7 +27,6 @@
 
     <!-- Posts Section -->
     <ul class="space-y-6">
-      <!-- Iterate over posts and display each post content -->
       <% for (post of posts) { %>
         <div class="bg-white p-6 rounded-lg shadow-md flex items-start space-x-4">
           <!-- User Profile Image -->
@@ -39,46 +35,52 @@
           </div>
           <!-- Post Content -->
           <div class="flex-1">
-            <div class="text-lg font-semibold text-gray-900"><%= post.user.name %></div>
+            <!-- Delete Button -->
+            <div class="flex justify-between items-center">
+              <div class="text-lg font-semibold text-gray-900"><%= post.user.name %></div> <!-- First and only occurrence -->
+              <% if (locals.user && post.user.id == locals.user.id) { %>
+                <form action="/post/destroy/<%= post.id %>" method="post" onsubmit="return confirm('Are you sure you want to delete this post?');">
+                  <button type="submit" class="text-red-500 hover:text-red-700">
+                    <i class="fa-solid fa-trash"></i> Delete
+                  </button>
+                </form>
+              <% } %>
+            </div>
+
             <p class="text-gray-700 mt-1 mb-2"><%= post.content %></p>
             <div class="text-sm text-gray-500">
-              <%= new Date(post.createdAt).toLocaleString() %> <!-- Post date/time -->
+              <%= new Date(post.createdAt).toLocaleString() %>
             </div>
 
             <!-- Comment Section -->
             <div class="mt-4 space-y-2">
-              <!-- Display existing comments -->
-              <div class="mt-4 space-y-2">
-                <!-- Display existing comments -->
-                <% if (post.comments.length > 0) { %>
-                  <% for (comment of post.comments) { %>
-                    <div class="bg-gray-100 p-2 rounded-lg">
-                      <p class="text-sm text-gray-700"><%= comment.content %></p>
-                      <p class="text-xs text-gray-500">- <%= comment.user.name %></p>
-                    </div>
-                  <% } %>
+              <% if (post.comments.length > 0) { %>
+                <% for (comment of post.comments) { %>
+                  <div class="bg-gray-100 p-2 rounded-lg">
+                    <p class="text-sm text-gray-700"><%= comment.content %></p>
+                    <p class="text-xs text-gray-500">- <%= comment.user.name %></p>
+                  </div>
                 <% } %>
-              </div>
-
-              <!-- Add Comment Form -->
-              <% if (locals.user) { %> 
-                <form action="/comment/create-comment" method="post" class="flex space-x-2">
-                  <input type="hidden" name="post" value="<%= post._id %>">
-                  <input 
-                    type="text" 
-                    name="content" 
-                    placeholder="Write a comment..." 
-                    required 
-                    class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  >
-                  <input 
-                    type="submit" 
-                    value="Add" 
-                    class="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300 cursor-pointer"
-                  >
-                </form>
               <% } %>
             </div>
+
+            <% if (locals.user) { %> 
+              <form action="/comment/create-comment" method="post" class="flex space-x-2">
+                <input type="hidden" name="post" value="<%= post._id %>">
+                <input 
+                  type="text" 
+                  name="content" 
+                  placeholder="Write a comment..." 
+                  required 
+                  class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                <input 
+                  type="submit" 
+                  value="Add" 
+                  class="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300 cursor-pointer"
+                >
+              </form>
+            <% } %>
           </div>
         </div>
       <% } %>
