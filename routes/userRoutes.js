@@ -12,10 +12,11 @@ Router.get('/signIn', userController.getSignIn);
 // Router.post('/signIn', userController.postSignIn);
 
 // Authentication using passport middleware
-Router.post('/signIn', passport.authenticate(
-    'local',
-    { failureRedirect: 'user/signIn' }
-), userController.postSignIn);
+Router.post(
+  "/signIn",
+  passport.authenticate("local", { failureRedirect: "/signIn" }),
+  userController.postSignIn
+);
 
 Router.get('/userProfile',passport.checkAuthentication, userController.getUserProfile);
 Router.get('/signOut' , userController.postSignOut);

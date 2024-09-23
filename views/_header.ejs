@@ -1,12 +1,22 @@
-<header>
-    Page Header
+<header class="bg-blue-600 text-white p-5 shadow-md">
+    <div class="container mx-auto flex justify-between items-center">
+        <!-- Logo or Page Title -->
+        <h1 class="text-2xl font-bold">Page Header</h1>
 
-    <% if (locals.user) { %>
-        <li><%= user.name%></li>
-        <li><a href="/user/signOut">SignOut</a></li>
-    <% } else { %>
-        <!-- <li><a href="/user/signIn">SignIn</a></li> -->
-        <li><a href="/user/signUp">SignUp</a></li>
-    <% } %>
-    
+        <!-- Navigation / User Actions -->
+        <ul class="flex items-center gap-4">
+            <% if (locals.user) { %>
+                
+                <a href="/user/userProfile"><li class="text-lg"><%= user.name %></li></a>
+                <a href="/"><li class="text-lg"><i class="fa-solid fa-house"></i></li></a>
+                <li>
+                    <a href="/user/signOut" class="bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-300">Sign Out</a>
+                </li>
+            <% } else { %>
+                <li>
+                    <a href="/user/signIn" class="bg-green-500 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-300">Sign In</a>
+                </li>
+            <% } %>
+        </ul>
+    </div>
 </header>

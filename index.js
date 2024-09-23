@@ -11,6 +11,7 @@ const session = require('express-session');
 const passport = require('passport');
 const passportLocal = require('./config/passport-local-strategy');
 const MongoStore = require("connect-mongo");
+const postRoutes = require("./routes/postRoutes");
 
 // Middleware to serve layouts
 app.use(expressLayouts);
@@ -24,27 +25,30 @@ app.set("layout extractScripts", true);
 app.use(express.urlencoded({ extended: true }));
 
 // Serve static files
-app.use(express.static("assets"));
 
 // Set view engine
+app.use(express.static("./assests"));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
+// app.use(express.static(path.join(__dirname, "src")));
 
 // Session middleware configuration
-app.use(session({
-    name: 'codial',
-    secret: 'blabla',
+app.use(
+  session({
+    name: "codial",
+    secret: "blabla",
     saveUninitialized: false,
     resave: false,
     cookie: {
-        maxAge: (1000 * 60 * 100) // Setting cookie expiration
+      maxAge: 1000 * 60 * 100, // Setting cookie expiration
     },
     store: MongoStore.create({
-        mongoUrl: 'mongodb://localhost/codial_db', // Use the connection string
-        // mongooseConnection : db ,
-        autoRemove: 'disabled' // Optional: specify to disable auto removal
-    })
-}));
+      mongoUrl: "mongodb://localhost/codial_db", // Use the connection string
+      // mongooseConnection : db ,
+      autoRemove: "disabled", // Optional: specify to disable auto removal
+    }),
+  })
+);
 
 // Initialize Passport and session handling
 app.use(passport.initialize());
@@ -53,7 +57,8 @@ app.use(passportLocal.setAuthenticatedUser);
 
 // Define routes
 app.use(homeRouter);
-app.use('/user', userRoutes);
+app.use("/user", userRoutes);
+app.use("/post", postRoutes);
 
 // Start the server
 app.listen(port, () => {
