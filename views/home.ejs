@@ -1,50 +1,87 @@
 <div class="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4">
-    <!-- Title -->
-    <h1 class="text-4xl font-bold text-gray-800 mb-6">
-      Codial | <%= title %>
-    </h1>
-  
-    <!-- Form Section -->
-    <section class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
-      <!-- Form for Creating a Post -->
-      <form action="post/create-post" method="post" class="space-y-4 mb-8">
-        <!-- Textarea for Post Content -->
-        <textarea 
-          name="content" 
-          cols="30" 
-          rows="5" 
-          placeholder="What's on your mind?" 
-          required 
-          class="w-full p-4 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
-        ></textarea>
-  
-        <!-- Submit Button -->
-        <input 
-          type="submit" 
-          value="Post" 
-          class="w-full bg-blue-500 text-white font-semibold py-2 rounded-lg hover:bg-blue-600 transition duration-300 cursor-pointer"
-        >
-      </form>
+  <!-- Title -->
+  <h1 class="text-4xl font-bold text-gray-800 mb-6">
+    Codial | <%= title %>
+  </h1>
 
-      <!-- Posts Section -->
-      <ul class="space-y-6">
-        <!-- Iterate over posts and display each post content -->
-        <% for (post of posts) { %>
-          <div class="bg-white p-6 rounded-lg shadow-md flex items-start space-x-4">
-            <!-- User Profile Image -->
-            <div class="flex-shrink-0">
-              <img class="h-10 w-10 rounded-full" src="https://ui-avatars.com/api/?name=<%= post.user.name %>&background=random" alt="User Avatar">
+  <!-- Form Section -->
+  <section class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
+    <!-- Form for Creating a Post -->
+    <% if (locals.user) { %> 
+    <form action="post/create-post" method="post" class="space-y-4 mb-8">
+      <!-- Textarea for Post Content -->
+      <textarea 
+        name="content" 
+        cols="30" 
+        rows="5" 
+        placeholder="What's on your mind?" 
+        required 
+        class="w-full p-4 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+      ></textarea>
+
+      <!-- Submit Button -->
+      <input 
+        type="submit" 
+        value="Post" 
+        class="w-full bg-blue-500 text-white font-semibold py-2 rounded-lg hover:bg-blue-600 transition duration-300 cursor-pointer"
+      >
+    </form>
+    <% } %>
+
+    <!-- Posts Section -->
+    <ul class="space-y-6">
+      <!-- Iterate over posts and display each post content -->
+      <% for (post of posts) { %>
+        <div class="bg-white p-6 rounded-lg shadow-md flex items-start space-x-4">
+          <!-- User Profile Image -->
+          <div class="flex-shrink-0">
+            <img class="h-10 w-10 rounded-full" src="https://ui-avatars.com/api/?name=<%= post.user.name %>&background=random" alt="User Avatar">
+          </div>
+          <!-- Post Content -->
+          <div class="flex-1">
+            <div class="text-lg font-semibold text-gray-900"><%= post.user.name %></div>
+            <p class="text-gray-700 mt-1 mb-2"><%= post.content %></p>
+            <div class="text-sm text-gray-500">
+              <%= new Date(post.createdAt).toLocaleString() %> <!-- Post date/time -->
             </div>
-            <!-- Post Content -->
-            <div class="flex-1">
-              <div class="text-lg font-semibold text-gray-900"><%= post.user.name %></div>
-              <p class="text-gray-700 mt-1 mb-2"><%= post.content %></p>
-              <div class="text-sm text-gray-500">
-                <%= new Date(post.createdAt).toLocaleString() %> <!-- Post date/time -->
+
+            <!-- Comment Section -->
+            <div class="mt-4 space-y-2">
+              <!-- Display existing comments -->
+              <div class="mt-4 space-y-2">
+                <!-- Display existing comments -->
+                <% if (post.comments.length > 0) { %>
+                  <% for (comment of post.comments) { %>
+                    <div class="bg-gray-100 p-2 rounded-lg">
+                      <p class="text-sm text-gray-700"><%= comment.content %></p>
+                      <p class="text-xs text-gray-500">- <%= comment.user.name %></p>
+                    </div>
+                  <% } %>
+                <% } %>
               </div>
+
+              <!-- Add Comment Form -->
+              <% if (locals.user) { %> 
+                <form action="/comment/create-comment" method="post" class="flex space-x-2">
+                  <input type="hidden" name="post" value="<%= post._id %>">
+                  <input 
+                    type="text" 
+                    name="content" 
+                    placeholder="Write a comment..." 
+                    required 
+                    class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                  <input 
+                    type="submit" 
+                    value="Add" 
+                    class="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300 cursor-pointer"
+                  >
+                </form>
+              <% } %>
             </div>
           </div>
-        <% } %>
-      </ul>
-    </section>
+        </div>
+      <% } %>
+    </ul>
+  </section>
 </div>
