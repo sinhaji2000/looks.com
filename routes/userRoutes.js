@@ -18,7 +18,13 @@ Router.post(
   userController.postSignIn
 );
 
-Router.get('/userProfile',passport.checkAuthentication, userController.getUserProfile);
-Router.get('/signOut' , userController.postSignOut);
+Router.get(
+  "/userProfile/:id",
+  passport.checkAuthentication,
+  userController.getUserProfile
+);
+Router.get("/signOut", userController.postSignOut);
+
+Router.post("/update_profile/:id", userController.updateUserProfile);
 
 module.exports = Router;

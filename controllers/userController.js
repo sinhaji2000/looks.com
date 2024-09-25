@@ -57,27 +57,47 @@ exports.postSignIn = (req, res) => {
 // Profile rendering
 exports.getUserProfile = async (req, res) => {
   try {
-   // check all by passport which we makw chckAuthticated in pass-locak-stratrgy.js file like user is sighin or not etc
-
-    return res.render('userProfile' , {
+    // check all by passport which we makw chckAuthticated in pass-locak-stratrgy.js file like user is sighin or not etc
+    const user = await User.findById(req.params.id);
+    return res.render("userProfile", {
       title: "userProfile",
-        path: "css/userProfile.css",
-    })
-    
+      path: "css/userProfile.css",
+      profile_user: user,
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).send("Error loading profile");
   }
 };
 
-exports.postSignOut = (req , res) =>{
-
-  req.logout(err => {
-    if(err){
-      return res.status(500).send('Logout failed');
+exports.postSignOut = (req, res) => {
+  req.logout((err) => {
+    if (err) {
+      return res.status(500).send("Logout failed");
     }
-    return res.redirect('/');
-  })
+    return res.redirect("/");
+  });
   // return res.redirect('/')
-}
+};
+
+exports.updateUserProfile = async (req, res) => {
+  try {
+    const userId = await req.params.id;
+
+    const { name, email } = req.body;
+    const user = await User.findByIdAndUpdate(userId, {
+      name: name,
+      email: email,
+    });
+
+    console.log(user);
+
+    return res.redirect(`/user/userProfile/${userId}`);
+
+    console.log(userId);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send("Error updating profile");
+  }
+};
 

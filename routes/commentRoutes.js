@@ -9,4 +9,9 @@ Router.post(
   commentController.createComment
 );
 
+Router.post(
+  "/delete-comment/:id",
+  passport.checkAuthentication,
+  commentController.destroyComments
+);
 module.exports = Router;

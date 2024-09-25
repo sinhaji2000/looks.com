@@ -2,10 +2,19 @@ const Post = require("../models/post");
 const Comment = require("../models/comment");
 exports.postPost = async (req, res) => {
   try {
-    const post = await Post.create({
+    let post = await Post.create({
       content: req.body.content,
       user: req.user._id,
     });
+
+    if (req.xhr) {
+      return res.status(200).json({
+        data: {
+          post: post,
+        },
+        message: "Post created",
+      });
+    }
 
     return res.redirect("/");
   } catch (error) {
@@ -22,9 +31,14 @@ exports.deletePost = async (req, res) => {
       return res.status(404).send("Post not found");
     }
 
-    console.log("Post User ID: ", post.user.toString());
-    console.log("Logged-in User ID: ", req.user.id.toString());
-
+   if (req.xhr) {
+     return res.status(200).json({
+       data: {
+         post_id: req.params.id,
+       },
+       message: "post delete succesfully",
+     });
+   }
     // Check if the user deleting the post is the owner
     if (post.user.toString() === req.user.id.toString()) {
       // Use findByIdAndDelete instead of post.remove()

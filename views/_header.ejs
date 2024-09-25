@@ -7,7 +7,7 @@
         <ul class="flex items-center gap-4">
             <% if (locals.user) { %>
                 
-                <a href="/user/userProfile"><li class="text-lg"><%= user.name %></li></a>
+                <a href="/user/userProfile/<%= user.id%>"><li class="text-lg"><%= user.name %></li></a>
                 <a href="/"><li class="text-lg"><i class="fa-solid fa-house"></i></li></a>
                 <li>
                     <a href="/user/signOut" class="bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-300">Sign Out</a>
