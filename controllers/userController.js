@@ -79,25 +79,43 @@ exports.postSignOut = (req, res) => {
   });
   // return res.redirect('/')
 };
-
 exports.updateUserProfile = async (req, res) => {
-  try {
-    const userId = await req.params.id;
+  if (req.user.id == req.params.id) {
+    try {
+      let user = await User.findById(req.params.id);
 
-    const { name, email } = req.body;
-    const user = await User.findByIdAndUpdate(userId, {
-      name: name,
-      email: email,
-    });
+      // Use multer to upload the avatar
+      User.uploadedAvatar(req, res, (err) => {
+        if (err) {
+          console.log("***********multer error", err);
+          return res.redirect("back"); // Handle error properly
+        }
 
-    console.log(user);
+        // Update user details from the request body
+        user.name = req.body.name;
+        user.email = req.body.email;
 
-    return res.redirect(`/user/userProfile/${userId}`);
+        // Update the avatar only if a file is uploaded
+        if (req.file) {
+          // Check if avatar already exists and delete it (if necessary)
+          if (user.avatar) {
+            // TODO: You might want to delete the old avatar from the file system here
+          }
 
-    console.log(userId);
-  } catch (error) {
-    console.log(error);
-    return res.status(500).send("Error updating profile");
+          // Update the avatar path in the user model
+          user.avatar = User.avatarPath + "/" + req.file.filename;
+        }
+
+        // Save the updated user data to the database
+        user.save();
+        return res.redirect("/");
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(500).send("Error while updating profile");
+    }
+  } else {
+    res.status(401).send("Unauthorized to update this profile");
   }
 };
 
