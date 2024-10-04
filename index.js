@@ -29,6 +29,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Set view engine
 app.use(express.static("./assests"));
+app.use("/uploads", express.static(__dirname + "/uploads"));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 // app.use(express.static(path.join(__dirname, "src")));

@@ -1,9 +1,10 @@
 const User = require("../models/user");
+const fs = require("fs");
+const path = require("path");
 
 exports.getSignUp = (req, res) => {
-
-  if(req.isAuthenticated()){
-    return res.redirect('/user/userProfile')
+  if (req.isAuthenticated()) {
+    return res.redirect("/user/userProfile");
   }
   return res.render("signUp", {
     title: "signUp",
@@ -13,7 +14,6 @@ exports.getSignUp = (req, res) => {
 
 exports.postSignUp = async (req, res) => {
   try {
-    
     const { name, email, password } = req.body;
     const isUserExists = await User.findOne({ email: email });
 
@@ -36,22 +36,18 @@ exports.postSignUp = async (req, res) => {
 };
 
 exports.getSignIn = (req, res) => {
-
-  if(req.isAuthenticated()){
-    return res.redirect('/user/userProfile')
+  if (req.isAuthenticated()) {
+    return res.redirect("/user/userProfile");
   }
-    return res.render("signIn", {
-      title: "signIn",
-      path: "css/signIn.css",
-    });
-  
-  
+  return res.render("signIn", {
+    title: "signIn",
+    path: "css/signIn.css",
+  });
 };
 
 exports.postSignIn = (req, res) => {
-
   // This will work with passport.js authentication
-  return res.redirect('/');
+  return res.redirect("/");
 };
 
 // Profile rendering
@@ -98,6 +94,11 @@ exports.updateUserProfile = async (req, res) => {
         // Update the avatar only if a file is uploaded
         if (req.file) {
           // Check if avatar already exists and delete it (if necessary)
+
+          // if user.avatar already exits then previos avatar should be delete or replaced
+          if (user.avatar) {
+            fs.unlinkSync(path.join(__dirname, "..", user.avatar));
+          }
           if (user.avatar) {
             // TODO: You might want to delete the old avatar from the file system here
           }
