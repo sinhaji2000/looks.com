@@ -14,7 +14,7 @@ exports.postSignIn = async (req, res) => {
     return res.json(200, {
       message: "sigin in succefully plz keep it safe ur token",
       data: {
-        token: jwt.sign(user.toJSON(), "secret", { expiresIn: "10000" }),
+        token: jwt.sign(user.toJSON(), "secret", { expiresIn: "100000" }),
       },
     });
   } catch (error) {

@@ -30,19 +30,19 @@ exports.deletePost = async (req, res) => {
     }
 
     // Check if the user deleting the post is the owner
-    // if (post.user.toString() === req.user.id.toString()) {
-    // Use findByIdAndDelete instead of post.remove()
-    await Post.findByIdAndDelete(req.params.id);
+    if (post.user.toString() === req.user.id.toString()) {
+      // Use findByIdAndDelete instead of post.remove()
+      await Post.findByIdAndDelete(req.params.id);
 
-    // Remove all comments related to this post
-    await Comment.deleteMany({ post: req.params.id });
+      // Remove all comments related to this post
+      await Comment.deleteMany({ post: req.params.id });
 
-    return res.json(200, {
-      message: "post and associated commente deete succesfully",
-    });
-    // } else {
-    //   return res.status(403).send("Unauthorized action");
-    // }
+      return res.json(200, {
+        message: "post and associated commente deete succesfully",
+      });
+    } else {
+      return res.status(403).send("Unauthorized action");
+    }
   } catch (error) {
     // console.error("Error while deleting post:", error);
     return res.status(500, {
