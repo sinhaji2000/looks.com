@@ -13,6 +13,8 @@ const passportLocal = require('./config/passport-local-strategy');
 const MongoStore = require("connect-mongo");
 const postRoutes = require("./routes/postRoutes");
 const commentRoutes = require("./routes/commentRoutes");
+const apiRoutes = require("./routes/api/index");
+const passportJWT = require("./config/passport-jwt-strategy");
 
 // Middleware to serve layouts
 app.use(expressLayouts);
@@ -56,12 +58,14 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(passportLocal.setAuthenticatedUser);
+// app.use(passportJWTs);
 
 // Define routes
 app.use(homeRouter);
 app.use("/user", userRoutes);
 app.use("/post", postRoutes);
 app.use("/comment", commentRoutes);
+app.use("/api", apiRoutes);
 
 // Start the server
 app.listen(port, () => {
