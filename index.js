@@ -1,5 +1,6 @@
 const express = require("express");
-const cookieParser = require('cookie-parser');
+require("dotenv").config();
+const cookieParser = require("cookie-parser");
 const port = 8000;
 const app = express();
 const path = require("path");
@@ -7,14 +8,17 @@ const db = require("./config/mongoose");
 const homeRouter = require("./routes/homeRoutes");
 const userRoutes = require("./routes/userRoutes");
 const expressLayouts = require("express-ejs-layouts");
-const session = require('express-session');
-const passport = require('passport');
-const passportLocal = require('./config/passport-local-strategy');
+const session = require("express-session");
+const passport = require("passport");
+const passportLocal = require("./config/passport-local-strategy");
 const MongoStore = require("connect-mongo");
 const postRoutes = require("./routes/postRoutes");
 const commentRoutes = require("./routes/commentRoutes");
 const apiRoutes = require("./routes/api/index");
 const passportJWT = require("./config/passport-jwt-strategy");
+const passportGoogle = require("./config/passport-google-oAuth2-strategy");
+
+
 
 // Middleware to serve layouts
 app.use(expressLayouts);

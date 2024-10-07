@@ -41,7 +41,7 @@ exports.deletePost = async (req, res) => {
         message: "post and associated commente deete succesfully",
       });
     } else {
-      return res.status(403).send("Unauthorized action");
+      return res.status(401).send("Unauthorized action");
     }
   } catch (error) {
     // console.error("Error while deleting post:", error);

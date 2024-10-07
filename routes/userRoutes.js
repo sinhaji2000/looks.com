@@ -14,7 +14,7 @@ Router.get('/signIn', userController.getSignIn);
 // Authentication using passport middleware
 Router.post(
   "/signIn",
-  passport.authenticate("local", { failureRedirect: "/signIn" }),
+  passport.authenticate("local", { failureRedirect: "/user/signIn" }),
   userController.postSignIn
 );
 
@@ -26,5 +26,18 @@ Router.get(
 Router.get("/signOut", userController.postSignOut);
 
 Router.post("/update_profile/:id", userController.updateUserProfile);
+Router.get(
+  "/auth/google",
+  passport.authenticate("google", { scope: ["profile", "email"] })
+);
+
+Router.get(
+  "/auth/google/callback",
+  passport.authenticate("google", {
+    failureRedirect: "/user/signIn",
+  }),
+  userController.postSignIn
+);
+
 
 module.exports = Router;

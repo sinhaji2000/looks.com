@@ -6,15 +6,29 @@
         <!-- Navigation / User Actions -->
         <ul class="flex items-center gap-4">
             <% if (locals.user) { %>
-                
-                <a href="/user/userProfile/<%= user.id%>"><li class="text-lg"><%= user.name %></li></a>
-                <a href="/"><li class="text-lg"><i class="fa-solid fa-house"></i></li></a>
+                <a href="/user/userProfile/<%= user.id %>">
+                    <li class="text-lg"><%= user.name %></li>
+                </a>
+                <a href="/">
+                    <li class="text-lg"><i class="fa-solid fa-house"></i></li>
+                </a>
                 <li>
-                    <a href="/user/signOut" class="bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-300">Sign Out</a>
+                    <a href="/user/signOut" class="bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-300">
+                        Sign Out
+                    </a>
                 </li>
             <% } else { %>
                 <li>
-                    <a href="/user/signIn" class="bg-green-500 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-300">Sign In</a>
+                    <a href="/user/signIn" class="bg-green-500 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-300">
+                        Sign In
+                    </a>
+                </li>
+                <!-- Sign in with Google Button -->
+                <li>
+                    <a href="/user/auth/google" class="bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 flex items-center gap-2">
+                        <img src="https://files.codingninjas.in/google-icon-19642.svg" alt="Google Icon" class="h-5 w-5">
+                        Google
+                    </a>
                 </li>
             <% } %>
         </ul>
