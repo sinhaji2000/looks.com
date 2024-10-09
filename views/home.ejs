@@ -10,7 +10,7 @@
     <section class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
       <!-- Form for Creating a Post -->
       <% if (locals.user) { %>
-      <form action="/post/create-post" method="post" class="space-y-4 mb-8" id="new-post-form">
+      <form action="post/create-post" method="post" class="space-y-4 mb-8" id="new-post-form">
         <textarea 
           name="content" 
           cols="30" 
@@ -30,7 +30,7 @@
       <!-- Posts Section -->
       <ul class="space-y-6" id="posts-list-container">
         <% for (post of posts) { %>
-          <%- include('_post')-%>
+          <%- include('_post') %> <!-- Corrected include tag -->
         <% } %>
       </ul>
     </section>

@@ -70,6 +70,7 @@ app.use("/user", userRoutes);
 app.use("/post", postRoutes);
 app.use("/comment", commentRoutes);
 app.use("/api", apiRoutes);
+app.use("/likes", require("./routes/likesRoutes"));
 
 // Start the server
 app.listen(port, () => {

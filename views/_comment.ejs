@@ -1,11 +1,31 @@
-<div class="bg-gray-100 p-2 rounded-lg">
-    <% if (locals.user && comment.user._id.toString() === locals.user._id.toString()) { %>
-      <form action="/comment/delete-comment/<%= comment._id %>" method="post" onsubmit="return confirm('Are you sure you want to delete this comment?');">
-        <button type="submit" class="text-red-500 hover:text-red-700">
-          <i class="fa-solid fa-trash"></i> Delete
-        </button>
-      </form>
-    <% } %>
-    <p class="text-sm text-gray-700"><%= comment.content %></p>
+<div class="bg-gray-100 p-4 rounded-lg shadow-sm flex justify-between items-start space-x-4">
+  <!-- Comment Content -->
+  <div class="flex-1">
+    <!-- Comment Text -->
+    <p class="text-md text-gray-800 mb-1 leading-relaxed"><%= comment.content %></p>
+    <!-- Comment Author -->
     <p class="text-xs text-gray-500">- <%= comment.user.name %></p>
   </div>
+
+  <!-- Comment Actions (Delete & Like) -->
+  <div class="flex gap-3 items-center">
+    <% if (locals.user && comment.user._id.toString() === locals.user._id.toString()) { %>
+      <!-- Delete Button -->
+      <form action="/comment/delete-comment/<%= comment._id %>" method="post" onsubmit="return confirm('Are you sure you want to delete this comment?');">
+        <button type="submit" class="text-red-500 hover:text-red-700 transition duration-300">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </form>
+      <form action="/likes/toggle/?id=<%= comment._id %>&type=Comment" method="post">
+        <button type="submit" class="text-blue-500 hover:text-blue-700 transition duration-300">
+          <i class="fa-regular fa-thumbs-up"></i><%= comment.likes.length %>
+        </button>
+      </form>
+    <% } else {%> 
+      <i class="fa-regular fa-thumbs-up"></i><%= comment.likes.length %>
+      <%}%>
+    
+    <!-- Like Button -->
+   
+  </div>
+</div>
