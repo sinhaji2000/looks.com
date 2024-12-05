@@ -22,6 +22,12 @@ const userSchema = mongoose.Schema(
     avatar: {
       type: String,
     },
+    frinds: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: "Friend",
+      },
+    ],
   },
   {
     timestamps: true,
